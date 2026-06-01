@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ffffff">
+<title>Entregas del Día</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: #f5f5f5;
+    color: #111111;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #ffffff;
+    padding: 20px 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .conductor-label {
+    font-size: 12px;
+    color: #9ca3af;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+
+  .conductor-nombre {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111111;
+    line-height: 1.2;
+  }
+
+  .fecha-badge {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    background: #f5f5f5;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-section {
+    padding-bottom: 16px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .progress-label {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 400;
+  }
+
+  .progress-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111111;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #22c55e;
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 16px 16px 8px;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111111;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-num.verde { color: #22c55e; }
+  .stat-num.naranja { color: #f59e0b; }
+
+  .stat-label {
+    font-size: 11px;
+    color: #9ca3af;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    padding: 16px 16px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  /* ── PARADA CARD ── */
+  .parada {
+    margin: 0 16px 10px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+    border-left: 4px solid transparent;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .parada.activa {
+    border-left-color: #111111;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  }
+
+  .parada.entregada {
+    border-left-color: #22c55e;
+    opacity: 0.6;
+  }
+
+  .parada-inner {
+    padding: 16px;
+  }
+
+  /* ── BADGE SIGUIENTE ── */
+  .badge-siguiente {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #111111;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── INFO PARADA ── */
+  .parada-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+  }
+
+  .parada-num-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #9ca3af;
+  }
+
+  .zona-pill {
+    font-size: 11px;
+    font-weight: 500;
+    color: #6b7280;
+    background: #f5f5f5;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .parada-nombre {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111111;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .parada.entregada .parada-nombre {
+    color: #6b7280;
+    text-decoration: line-through;
+  }
+
+  .parada-dir {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .parada-dir-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #9ca3af;
+  }
+
+  /* ── PRODUCTO TAGS ── */
+  .parada-productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .producto-tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: #374151;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  /* ── BOTONES ── */
+  .btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .btn {
+    min-height: 52px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+    letter-spacing: -0.01em;
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+    opacity: 0.85;
+  }
+
+  .btn-navegar {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .btn-entregar {
+    background: #22c55e;
+    color: #ffffff;
+  }
+
+  .btn-entregar:disabled {
+    background: #d1fae5;
+    color: #86efac;
+    cursor: not-allowed;
+  }
+
+  .btn-entregar:disabled:active {
+    transform: none;
+    opacity: 1;
+  }
+
+  /* ── ESTADO ENTREGADA ── */
+  .check-estado {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #22c55e;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .check-icon {
+    width: 24px;
+    height: 24px;
+    background: #dcfce7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .check-hora {
+    font-size: 12px;
+    color: #9ca3af;
+    font-weight: 400;
+    margin-left: 2px;
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+  }
+
+  /* ── BANNER COMPLETADO ── */
+  .banner-done {
+    display: none;
+    margin: 8px 16px 4px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .banner-done.show { display: block; }
+
+  .banner-done-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .banner-done h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #15803d;
+    margin-bottom: 4px;
+  }
+
+  .banner-done p {
+    font-size: 13px;
+    color: #4ade80;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 108px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: #111111;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 22px;
+    border-radius: 30px;
+    opacity: 0;
+    transition: all 0.25s ease;
+    z-index: 999;
+    white-space: nowrap;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toast-check {
+    width: 18px;
+    height: 18px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-top: 1px solid #f0f0f0;
+    padding: 14px 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .bottom-proxima {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .bottom-proxima-label {
+    font-size: 11px;
+    color: #9ca3af;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .bottom-proxima-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── ERROR STATE ── */
+  .error-state {
+    margin: 24px 16px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 14px;
+    color: #9a3412;
+    line-height: 1.6;
+  }
+
+  .error-state strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  /* ── SKELETON LOADER ── */
+  .skeleton {
+    margin: 0 16px 10px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    padding: 16px;
+    border-left: 4px solid #f0f0f0;
+  }
+
+  .skel-line {
+    background: #f0f0f0;
+    border-radius: 4px;
+    animation: shimmer 1.4s ease infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="conductor-info">
+      <div class="conductor-label">Conductor</div>
+      <div class="conductor-nombre" id="conductor-nombre">Cargando...</div>
+    </div>
+    <div class="fecha-badge" id="fecha-badge">—</div>
+  </div>
+  <div class="progress-section">
+    <div class="progress-meta">
+      <span class="progress-label">Progreso del día</span>
+      <span class="progress-count"><span id="count-done">0</span> de <span id="count-total">0</span> entregas</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-num" id="stat-pend">—</div>
+    <div class="stat-label">Pendientes</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num verde" id="stat-done">0</div>
+    <div class="stat-label">Entregados</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num naranja" id="stat-hora" style="font-size:17px">--:--</div>
+    <div class="stat-label">Última hora</div>
+  </div>
+</div>
+
+<!-- BANNER COMPLETADO -->
+<div class="banner-done" id="banner-done">
+  <span class="banner-done-icon">🎉</span>
+  <h2>¡Ruta completada!</h2>
+  <p id="banner-texto">Todas las entregas del día confirmadas.</p>
+</div>
+
+<!-- LISTA PENDIENTES -->
+<div class="section-title" id="title-pendientes">Ruta de hoy</div>
+<div id="lista-paradas">
+  <div class="skeleton">
+    <div class="skel-line" style="width:40%;height:10px;margin-bottom:10px;"></div>
+    <div class="skel-line" style="width:75%;height:16px;margin-bottom:8px;"></div>
+    <div class="skel-line" style="width:60%;height:12px;margin-bottom:16px;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="skel-line" style="height:52px;border-radius:10px;"></div>
+      <div class="skel-line" style="height:52px;border-radius:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LISTA ENTREGADAS -->
+<div class="section-divider" id="div-entregadas" style="display:none">Entregadas</div>
+<div id="lista-entregadas"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-check">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <path d="M2 5l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+  Entrega registrada
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <div class="bottom-proxima">
+    <div class="bottom-proxima-label">Próxima parada</div>
+    <div class="bottom-proxima-val" id="nav-proxima">Cargando...</div>
+  </div>
+</div>
+
+<script>
+const TAG_LABELS = {
+  hambur: "🍔 Hamburguesa",
+  salchi: "🌭 Salchicha",
+  pepper: "🍕 Pepperoni",
+  jamon:  "🥪 Jamón"
+};
+
+let PARADAS = [];
+let entregadas = new Set();
+let horasEntrega = {};
+
+function horaActual() {
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+function renderFecha() {
+  const d = new Date();
+  const dias = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+  const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+  document.getElementById('fecha-badge').textContent =
+    `${dias[d.getDay()]} ${d.getDate()} ${meses[d.getMonth()]}`;
+}
+
+function renderProgreso() {
+  const total = PARADAS.length;
+  const done = entregadas.size;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('count-done').textContent = done;
+  document.getElementById('count-total').textContent = total;
+  document.getElementById('stat-pend').textContent = total - done;
+  document.getElementById('stat-done').textContent = done;
+
+  const pendientes = PARADAS.filter(p => !entregadas.has(p.id));
+  document.getElementById('nav-proxima').textContent =
+    pendientes.length > 0 ? pendientes[0].nombre : "¡Completado!";
+
+  if (total > 0 && done === total) {
+    document.getElementById('banner-done').classList.add('show');
+    document.getElementById('banner-texto').textContent =
+      `¡Terminaste a las ${horaActual()}! Todas las entregas confirmadas.`;
+    document.getElementById('title-pendientes').style.display = 'none';
+  }
+}
+
+function renderParada(p, index) {
+  const esPrimera = !entregadas.has(p.id) &&
+    PARADAS.filter(x => !entregadas.has(x.id))[0]?.id === p.id;
+  const entregada = entregadas.has(p.id);
+  const hora = horasEntrega[p.id] || '';
+
+  const tags = p.tags.map(t =>
+    `<span class="producto-tag">${TAG_LABELS[t] || t}</span>`
+  ).join('');
+
+  const accionHtml = entregada
+    ? `<div class="check-estado">
+        <span class="check-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2.5 6l2.5 2.5 4.5-4.5" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Entregado
+        <span class="check-hora">a las ${hora}</span>
+      </div>`
+    : `<div class="btns">
+        <button class="btn btn-navegar" onclick="navegar('${p.maps}')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1.5C5.51 1.5 3.5 3.51 3.5 6c0 3.75 4.5 8.5 4.5 8.5s4.5-4.75 4.5-8.5c0-2.49-2.01-4.5-4.5-4.5z" stroke="white" stroke-width="1.3" stroke-linejoin="round"/>
+            <circle cx="8" cy="6" r="1.5" fill="white"/>
+          </svg>
+          Navegar
+        </button>
+        <button class="btn btn-entregar" onclick="marcarEntregado(${p.id})" ${!esPrimera ? 'disabled' : ''}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8l3.5 3.5 6.5-6.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Entregado
+        </button>
+      </div>`;
+
+  return `
+  <div class="parada ${esPrimera ? 'activa' : ''} ${entregada ? 'entregada' : ''}" id="parada-${p.id}">
+    <div class="parada-inner">
+      ${esPrimera ? `<div class="badge-siguiente"><span class="badge-dot"></span>Siguiente</div>` : ''}
+      <div class="parada-top">
+        <span class="parada-num-label">Parada ${index + 1} de ${PARADAS.length}</span>
+        <span class="zona-pill">${p.zona}</span>
+      </div>
+      <div class="parada-nombre">${p.nombre}</div>
+      <div class="parada-dir">
+        <svg class="parada-dir-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M6.5 1C4.57 1 3 2.57 3 4.5c0 2.8 3.5 7.5 3.5 7.5S10 7.3 10 4.5C10 2.57 8.43 1 6.5 1z" stroke="#9ca3af" stroke-width="1.1" stroke-linejoin="round"/>
+          <circle cx="6.5" cy="4.5" r="1.2" fill="#9ca3af"/>
+        </svg>
+        ${p.direccion}
+      </div>
+      <div class="parada-productos">${tags}</div>
+      ${accionHtml}
+    </div>
+  </div>`;
+}
+
+function renderLista() {
+  const pendientes = PARADAS.filter(p => !entregadas.has(p.id));
+  const hechas = PARADAS.filter(p => entregadas.has(p.id)).reverse();
+
+  const allIndexMap = Object.fromEntries(PARADAS.map((p, i) => [p.id, i]));
+
+  document.getElementById('lista-paradas').innerHTML =
+    pendientes.map(p => renderParada(p, allIndexMap[p.id])).join('');
+
+  const divEnt = document.getElementById('div-entregadas');
+  if (hechas.length > 0) {
+    divEnt.style.display = 'flex';
+    document.getElementById('lista-entregadas').innerHTML =
+      hechas.map(p => renderParada(p, allIndexMap[p.id])).join('');
+  } else {
+    divEnt.style.display = 'none';
+    document.getElementById('lista-entregadas').innerHTML = '';
+  }
+
+  renderProgreso();
+}
+
+function navegar(url) {
+  window.open(url, '_blank');
+}
+
+function marcarEntregado(id) {
+  const hora = horaActual();
+  entregadas.add(id);
+  horasEntrega[id] = hora;
+  document.getElementById('stat-hora').textContent = hora;
+
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+
+  renderLista();
+
+  setTimeout(() => {
+    const siguiente = PARADAS.find(p => !entregadas.has(p.id));
+    if (siguiente) {
+      const el = document.getElementById(`parada-${siguiente.id}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 300);
+}
+
+function mostrarError(msg) {
+  document.getElementById('lista-paradas').innerHTML =
+    `<div class="error-state"><strong>No se pudieron cargar las entregas</strong>${msg}</div>`;
+  document.getElementById('nav-proxima').textContent = 'Error al cargar';
+}
+
+renderFecha();
+
+fetch('entregas.json')
+  .then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  })
+  .then(data => {
+    PARADAS = data.paradas;
+    if (data.conductor) {
+      document.getElementById('conductor-nombre').textContent = data.conductor;
+    }
+    renderLista();
+  })
+  .catch(() => {
+    mostrarError(
+      'Abre el archivo desde un servidor web. En la terminal escribe: <br><code style="font-family:monospace;font-size:12px;background:#fef3c7;padding:2px 6px;border-radius:4px;">npx serve .</code>'
+    );
+  });
+</script>
+</body>
+</html>
