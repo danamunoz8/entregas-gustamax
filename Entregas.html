@@ -816,13 +816,17 @@ function restoreOrder(paradas) {
 }
 
 // ── DRAG AND DROP ──
-let draggedId = null;
+let draggedId  = null;
 let dropTarget = null;
 let dropBefore = true;
+let dragEventsAttached = false;
 
+// Se llama una sola vez — los listeners viven en el contenedor que nunca se reemplaza
 function attachDragEvents() {
-  const lista = document.getElementById('lista-paradas');
+  if (dragEventsAttached) return;
+  dragEventsAttached = true;
 
+  const lista = document.getElementById('lista-paradas');
   lista.addEventListener('dragstart', onDragStart);
   lista.addEventListener('dragover',  onDragOver);
   lista.addEventListener('dragleave', onDragLeave);
@@ -831,17 +835,17 @@ function attachDragEvents() {
 }
 
 function onDragStart(e) {
-  const card = e.target.closest('.parada[draggable="true"]');
+  const card = e.target.closest('[draggable="true"]');
   if (!card) return;
   draggedId = card.dataset.id;
   e.dataTransfer.effectAllowed = 'move';
-  // pequeño delay para que la clase no afecte la imagen del drag
+  e.dataTransfer.setData('text/plain', draggedId); // requerido por Chrome y Safari
   setTimeout(() => card.classList.add('dragging'), 0);
 }
 
 function onDragOver(e) {
   e.preventDefault();
-  const card = e.target.closest('.parada[draggable="true"]');
+  const card = e.target.closest('[draggable="true"]');
   if (!card || card.dataset.id === draggedId) return;
 
   clearDropIndicators();
@@ -854,7 +858,8 @@ function onDragOver(e) {
 
 function onDragLeave(e) {
   const card = e.target.closest('.parada');
-  if (card && !card.contains(e.relatedTarget)) {
+  // relatedTarget puede ser null si el cursor sale de la ventana
+  if (card && !card.contains(e.relatedTarget || null)) {
     card.classList.remove('drag-over-top', 'drag-over-bottom');
   }
 }
@@ -864,12 +869,14 @@ function onDrop(e) {
   if (!draggedId || !dropTarget || draggedId === dropTarget) return;
 
   const fromIdx = PARADAS.findIndex(p => p._id === draggedId);
-  let toIdx = PARADAS.findIndex(p => p._id === dropTarget);
-  if (fromIdx === -1 || toIdx === -1) return;
+  if (fromIdx === -1) return;
 
   const [moved] = PARADAS.splice(fromIdx, 1);
-  // recalcular toIdx tras el splice
-  toIdx = PARADAS.findIndex(p => p._id === dropTarget);
+
+  // recalcular toIdx después del splice porque los índices se desplazan
+  const toIdx = PARADAS.findIndex(p => p._id === dropTarget);
+  if (toIdx === -1) { PARADAS.splice(fromIdx, 0, moved); return; }
+
   PARADAS.splice(dropBefore ? toIdx : toIdx + 1, 0, moved);
 
   saveOrder();
