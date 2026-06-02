@@ -4,87 +4,87 @@
   "paradas": [
     {
       "posicion": 1,
-      "cliente": "EL CORRALITO",
-      "direccion": "CALLE 187 # 49-64",
+      "cliente": "",
+      "direccion": "",
       "notas": "",
-      "maps": "https://maps.google.com/?q=CALLE%20187%20%23%2049-64%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 2,
-      "cliente": "PIZZA EVOLUTION",
-      "direccion": "CALLE 167 # 47-19",
+      "cliente": "",
+      "direccion": "",
       "notas": "",
-      "maps": "https://maps.google.com/?q=CALLE%20167%20%23%2047-19%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 3,
-      "cliente": "PIZZA YORK",
-      "direccion": "CALLE 150 # 48-87",
+      "cliente": "",
+      "direccion": "",
       "notas": "",
-      "maps": "https://maps.google.com/?q=CALLE%20150%20%23%2048-87%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 4,
-      "cliente": "GUILLERMO LOPEZ",
-      "direccion": "RESTAURANTE CRA 53A # 127-47",
-      "notas": "Entregar antes de las 12:00 pm",
-      "maps": "https://maps.google.com/?q=RESTAURANTE%20CRA%2053A%20%23%20127-47%2C%20Bogot%C3%A1%2C%20Colombia"
+      "cliente": "",
+      "direccion": "",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 5,
-      "cliente": "BITTA PIZZA",
-      "direccion": "Calle 90#15-25",
+      "cliente": "",
+      "direccion": "",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Calle%2090%2315-25%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 6,
-      "cliente": "MANUELA BELTRAN",
-      "direccion": "AV CIRCUNVALAR # 60-00",
-      "notas": "Entregar antes de las 12:00 pm",
-      "maps": "https://maps.google.com/?q=AV%20CIRCUNVALAR%20%23%2060-00%2C%20Bogot%C3%A1%2C%20Colombia"
+      "cliente": "",
+      "direccion": "",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 7,
-      "cliente": "ALAN PIZZA",
-      "direccion": "CLL 63D 23-08",
+      "cliente": "Corferias",
+      "direccion": "cra 37 # 25-11 ",
       "notas": "",
-      "maps": "https://maps.google.com/?q=CLL%2063D%2023-08%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=cra%2037%20%23%2025-11%20%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 8,
-      "cliente": "BIG BURGER",
-      "direccion": "CALLE 53 # 77A-23",
+      "cliente": "Los brothers",
+      "direccion": "calle 8 sur # 31d-17",
       "notas": "",
-      "maps": "https://maps.google.com/?q=CALLE%2053%20%23%2077A-23%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=calle%208%20sur%20%23%2031d-17%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 9,
-      "cliente": "COMP. HAYUELOS",
-      "direccion": "Cl 20 #82 - 52",
+      "cliente": "Olímpicas 2",
+      "direccion": "cra 68d # 38-22 ",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Cl%2020%20%2382%20-%2052%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=cra%2068d%20%23%2038-22%20%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 10,
-      "cliente": "RAPIZZ BURGER - CARRILERA",
-      "direccion": "AV CALLE 22 # 81-66",
+      "cliente": "Frutería Olímpicas",
+      "direccion": "cll 37b # 68c - 71 sur ",
       "notas": "",
-      "maps": "https://maps.google.com/?q=AV%20CALLE%2022%20%23%2081-66%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=cll%2037b%20%23%2068c%20-%2071%20sur%20%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 11,
-      "cliente": "RAPIZZ BURGER - DIEGO",
-      "direccion": "CRA 82 # 23F -05",
+      "cliente": "mukalas pizza ",
+      "direccion": "Cra 88c # 49-16 sur",
       "notas": "",
-      "maps": "https://maps.google.com/?q=CRA%2082%20%23%2023F%20-05%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=Cra%2088c%20%23%2049-16%20sur%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 12,
-      "cliente": "TAZZ FACTORY",
-      "direccion": "TRANSVERSAL 76 # 83-14",
+      "cliente": "Pizza de película ",
+      "direccion": "cra 59 # 130-9 ",
       "notas": "",
-      "maps": "https://maps.google.com/?q=TRANSVERSAL%2076%20%23%2083-14%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=cra%2059%20%23%20130-9%20%2C%20Bogot%C3%A1%2C%20Colombia"
     }
   ]
 }
