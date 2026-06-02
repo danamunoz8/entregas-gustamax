@@ -766,10 +766,9 @@ fetch('/entregas.json')
     }
     renderLista();
   })
-  .catch(() => {
-    mostrarError(
-      'Abre el archivo desde un servidor web. En la terminal escribe: <br><code style="font-family:monospace;font-size:12px;background:#fef3c7;padding:2px 6px;border-radius:4px;">npx serve .</code>'
-    );
+  .catch(err => {
+    console.error('Error cargando entregas.json:', err);
+    mostrarError(`Error: ${err.message}`);
   });
 </script>
 </body>
