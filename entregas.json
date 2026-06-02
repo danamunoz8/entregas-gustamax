@@ -1,0 +1,76 @@
+{
+  "conductor": "Carlos",
+  "fecha": "2026-06-01",
+  "paradas": [
+    {
+      "id": 1,
+      "nombre": "Hamburguesería El Portal",
+      "direccion": "Cra 15 #93-75, Chapinero, Bogotá",
+      "zona": "Chapinero",
+      "productos": ["Hamburguesa x5kg", "Salchicha x3kg"],
+      "tags": ["hambur", "salchi"],
+      "eta": "10 min",
+      "maps": "https://maps.google.com/?q=Cra+15+%2393-75+Chapinero+Bogota"
+    },
+    {
+      "id": 2,
+      "nombre": "Perros & Burgers Usaquén",
+      "direccion": "Cl 119A #6-25, Usaquén, Bogotá",
+      "zona": "Usaquén",
+      "productos": ["Salchicha x5kg", "Pepperoni x2kg"],
+      "tags": ["salchi", "pepper"],
+      "eta": "22 min",
+      "maps": "https://maps.google.com/?q=Cl+119A+%236-25+Usaquen+Bogota"
+    },
+    {
+      "id": 3,
+      "nombre": "Fast Food La 80",
+      "direccion": "Av. Rojas con Cl 80, Engativá, Bogotá",
+      "zona": "Engativá",
+      "productos": ["Hamburguesa x10kg", "Jamón x4kg"],
+      "tags": ["hambur", "jamon"],
+      "eta": "35 min",
+      "maps": "https://maps.google.com/?q=Av+Rojas+Cl+80+Engativa+Bogota"
+    },
+    {
+      "id": 4,
+      "nombre": "La Esquina Gourmet",
+      "direccion": "Cl 45 #27-35, Teusaquillo, Bogotá",
+      "zona": "Teusaquillo",
+      "productos": ["Pepperoni x3kg", "Jamón x2kg"],
+      "tags": ["pepper", "jamon"],
+      "eta": "48 min",
+      "maps": "https://maps.google.com/?q=Cl+45+%2327-35+Teusaquillo+Bogota"
+    },
+    {
+      "id": 5,
+      "nombre": "Burguer King Kennedy",
+      "direccion": "Av. 1 de Mayo #69C-30, Kennedy, Bogotá",
+      "zona": "Kennedy",
+      "productos": ["Hamburguesa x20kg"],
+      "tags": ["hambur"],
+      "eta": "1h 05min",
+      "maps": "https://maps.google.com/?q=Av+1+de+Mayo+%2369C-30+Kennedy+Bogota"
+    },
+    {
+      "id": 6,
+      "nombre": "El Rincón Parrillero",
+      "direccion": "Cra 68D #22A-12, Puente Aranda, Bogotá",
+      "zona": "Puente Aranda",
+      "productos": ["Hamburguesa x8kg", "Salchicha x4kg", "Pepperoni x1kg"],
+      "tags": ["hambur", "salchi", "pepper"],
+      "eta": "1h 20min",
+      "maps": "https://maps.google.com/?q=Cra+68D+%2322A-12+Puente+Aranda+Bogota"
+    },
+    {
+      "id": 7,
+      "nombre": "Perros Calientes Bosa",
+      "direccion": "Cl 69D Sur #80A-25, Bosa, Bogotá",
+      "zona": "Bosa",
+      "productos": ["Salchicha x10kg", "Jamón x3kg"],
+      "tags": ["salchi", "jamon"],
+      "eta": "1h 50min",
+      "maps": "https://maps.google.com/?q=Cl+69D+Sur+%2380A-25+Bosa+Bogota"
+    }
+  ]
+}
