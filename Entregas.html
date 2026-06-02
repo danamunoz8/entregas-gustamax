@@ -753,25 +753,29 @@ function mostrarError(msg) {
   document.getElementById('nav-proxima').textContent = 'Error al cargar';
 }
 
-renderFecha();
+document.addEventListener('DOMContentLoaded', () => {
+  renderFecha();
 
-fetch('/entregas.json')
-  .then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.json();
-  })
-  .then(data => {
-    console.log('data:', data);
-    PARADAS = data.paradas;
-    if (data.conductor) {
-      document.getElementById('conductor-nombre').textContent = data.conductor;
-    }
-    renderLista();
-  })
-  .catch(err => {
-    console.error('Error cargando entregas.json:', err);
-    mostrarError(`Error: ${err.message}`);
-  });
+  console.log('Iniciando fetch...');
+  fetch('/entregas.json')
+    .then(r => {
+      console.log('Respuesta HTTP:', r.status, r.ok);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then(data => {
+      console.log('data:', data);
+      PARADAS = data.paradas;
+      if (data.conductor) {
+        document.getElementById('conductor-nombre').textContent = data.conductor;
+      }
+      renderLista();
+    })
+    .catch(err => {
+      console.error('Error cargando entregas.json:', err);
+      mostrarError(`Error: ${err.message}`);
+    });
+});
 </script>
 </body>
 </html>
