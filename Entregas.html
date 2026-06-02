@@ -760,6 +760,7 @@ fetch('/entregas.json')
     return r.json();
   })
   .then(data => {
+    console.log('data:', data);
     PARADAS = data.paradas;
     if (data.conductor) {
       document.getElementById('conductor-nombre').textContent = data.conductor;
