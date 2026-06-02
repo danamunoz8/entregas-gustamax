@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#ffffff">
 <title>Entregas del Día</title>
@@ -604,13 +605,6 @@
 </div>
 
 <script>
-const TAG_LABELS = {
-  hambur: "🍔 Hamburguesa",
-  salchi: "🌭 Salchicha",
-  pepper: "🍕 Pepperoni",
-  jamon:  "🥪 Jamón"
-};
-
 let PARADAS = [];
 let entregadas = new Set();
 let horasEntrega = {};
@@ -639,9 +633,9 @@ function renderProgreso() {
   document.getElementById('stat-pend').textContent = total - done;
   document.getElementById('stat-done').textContent = done;
 
-  const pendientes = PARADAS.filter(p => !entregadas.has(p.id));
+  const pendientes = PARADAS.filter(p => !entregadas.has(p.posicion));
   document.getElementById('nav-proxima').textContent =
-    pendientes.length > 0 ? pendientes[0].nombre : "¡Completado!";
+    pendientes.length > 0 ? pendientes[0].cliente : "¡Completado!";
 
   if (total > 0 && done === total) {
     document.getElementById('banner-done').classList.add('show');
@@ -651,15 +645,15 @@ function renderProgreso() {
   }
 }
 
-function renderParada(p, index) {
-  const esPrimera = !entregadas.has(p.id) &&
-    PARADAS.filter(x => !entregadas.has(x.id))[0]?.id === p.id;
-  const entregada = entregadas.has(p.id);
-  const hora = horasEntrega[p.id] || '';
+function renderParada(p) {
+  const esPrimera = !entregadas.has(p.posicion) &&
+    PARADAS.filter(x => !entregadas.has(x.posicion))[0]?.posicion === p.posicion;
+  const entregada = entregadas.has(p.posicion);
+  const hora = horasEntrega[p.posicion] || '';
 
-  const tags = p.tags.map(t =>
-    `<span class="producto-tag">${TAG_LABELS[t] || t}</span>`
-  ).join('');
+  const notasHtml = p.notas
+    ? `<div class="producto-tag" style="color:#d97706;border-color:#fde68a;background:#fffbeb;">⚠️ ${p.notas}</div>`
+    : '';
 
   const accionHtml = entregada
     ? `<div class="check-estado">
@@ -679,7 +673,7 @@ function renderParada(p, index) {
           </svg>
           Navegar
         </button>
-        <button class="btn btn-entregar" onclick="marcarEntregado(${p.id})" ${!esPrimera ? 'disabled' : ''}>
+        <button class="btn btn-entregar" onclick="marcarEntregado(${p.posicion})" ${!esPrimera ? 'disabled' : ''}>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M3 8l3.5 3.5 6.5-6.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -688,14 +682,13 @@ function renderParada(p, index) {
       </div>`;
 
   return `
-  <div class="parada ${esPrimera ? 'activa' : ''} ${entregada ? 'entregada' : ''}" id="parada-${p.id}">
+  <div class="parada ${esPrimera ? 'activa' : ''} ${entregada ? 'entregada' : ''}" id="parada-${p.posicion}">
     <div class="parada-inner">
       ${esPrimera ? `<div class="badge-siguiente"><span class="badge-dot"></span>Siguiente</div>` : ''}
       <div class="parada-top">
-        <span class="parada-num-label">Parada ${index + 1} de ${PARADAS.length}</span>
-        <span class="zona-pill">${p.zona}</span>
+        <span class="parada-num-label">Parada ${p.posicion} de ${PARADAS.length}</span>
       </div>
-      <div class="parada-nombre">${p.nombre}</div>
+      <div class="parada-nombre">${p.cliente}</div>
       <div class="parada-dir">
         <svg class="parada-dir-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
           <path d="M6.5 1C4.57 1 3 2.57 3 4.5c0 2.8 3.5 7.5 3.5 7.5S10 7.3 10 4.5C10 2.57 8.43 1 6.5 1z" stroke="#9ca3af" stroke-width="1.1" stroke-linejoin="round"/>
@@ -703,26 +696,24 @@ function renderParada(p, index) {
         </svg>
         ${p.direccion}
       </div>
-      <div class="parada-productos">${tags}</div>
+      ${notasHtml ? `<div class="parada-productos">${notasHtml}</div>` : ''}
       ${accionHtml}
     </div>
   </div>`;
 }
 
 function renderLista() {
-  const pendientes = PARADAS.filter(p => !entregadas.has(p.id));
-  const hechas = PARADAS.filter(p => entregadas.has(p.id)).reverse();
-
-  const allIndexMap = Object.fromEntries(PARADAS.map((p, i) => [p.id, i]));
+  const pendientes = PARADAS.filter(p => !entregadas.has(p.posicion));
+  const hechas = PARADAS.filter(p => entregadas.has(p.posicion)).reverse();
 
   document.getElementById('lista-paradas').innerHTML =
-    pendientes.map(p => renderParada(p, allIndexMap[p.id])).join('');
+    pendientes.map(renderParada).join('');
 
   const divEnt = document.getElementById('div-entregadas');
   if (hechas.length > 0) {
     divEnt.style.display = 'flex';
     document.getElementById('lista-entregadas').innerHTML =
-      hechas.map(p => renderParada(p, allIndexMap[p.id])).join('');
+      hechas.map(renderParada).join('');
   } else {
     divEnt.style.display = 'none';
     document.getElementById('lista-entregadas').innerHTML = '';
@@ -735,10 +726,10 @@ function navegar(url) {
   window.open(url, '_blank');
 }
 
-function marcarEntregado(id) {
+function marcarEntregado(posicion) {
   const hora = horaActual();
-  entregadas.add(id);
-  horasEntrega[id] = hora;
+  entregadas.add(posicion);
+  horasEntrega[posicion] = hora;
   document.getElementById('stat-hora').textContent = hora;
 
   const toast = document.getElementById('toast');
@@ -748,9 +739,9 @@ function marcarEntregado(id) {
   renderLista();
 
   setTimeout(() => {
-    const siguiente = PARADAS.find(p => !entregadas.has(p.id));
+    const siguiente = PARADAS.find(p => !entregadas.has(p.posicion));
     if (siguiente) {
-      const el = document.getElementById(`parada-${siguiente.id}`);
+      const el = document.getElementById(`parada-${siguiente.posicion}`);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, 300);
@@ -762,25 +753,29 @@ function mostrarError(msg) {
   document.getElementById('nav-proxima').textContent = 'Error al cargar';
 }
 
-renderFecha();
+document.addEventListener('DOMContentLoaded', () => {
+  renderFecha();
 
-fetch('entregas.json')
-  .then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.json();
-  })
-  .then(data => {
-    PARADAS = data.paradas;
-    if (data.conductor) {
-      document.getElementById('conductor-nombre').textContent = data.conductor;
-    }
-    renderLista();
-  })
-  .catch(() => {
-    mostrarError(
-      'Abre el archivo desde un servidor web. En la terminal escribe: <br><code style="font-family:monospace;font-size:12px;background:#fef3c7;padding:2px 6px;border-radius:4px;">npx serve .</code>'
-    );
-  });
+  console.log('Iniciando fetch...');
+  fetch('/entregas.json')
+    .then(r => {
+      console.log('Respuesta HTTP:', r.status, r.ok);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then(data => {
+      console.log('data:', data);
+      PARADAS = data.paradas;
+      if (data.conductor) {
+        document.getElementById('conductor-nombre').textContent = data.conductor;
+      }
+      renderLista();
+    })
+    .catch(err => {
+      console.error('Error cargando entregas.json:', err);
+      mostrarError(`Error: ${err.message}`);
+    });
+});
 </script>
 </body>
 </html>
