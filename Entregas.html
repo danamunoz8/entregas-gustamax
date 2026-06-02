@@ -501,6 +501,32 @@
     margin-bottom: 6px;
   }
 
+  /* ── DRAG AND DROP ── */
+  .parada[draggable="true"] { cursor: grab; }
+  .parada[draggable="true"]:active { cursor: grabbing; }
+
+  .parada.dragging {
+    opacity: 0.3;
+    border-left-color: #d1d5db !important;
+    box-shadow: none !important;
+  }
+
+  .parada.drag-over-top {
+    box-shadow: 0 -3px 0 0 #111111, 0 1px 4px rgba(0,0,0,0.08) !important;
+  }
+
+  .parada.drag-over-bottom {
+    box-shadow: 0 3px 0 0 #111111, 0 1px 4px rgba(0,0,0,0.08) !important;
+  }
+
+  .drag-handle {
+    color: #d1d5db;
+    cursor: grab;
+    line-height: 0;
+    padding: 2px 0 2px 6px;
+    flex-shrink: 0;
+  }
+
   /* ── SKELETON LOADER ── */
   .skeleton {
     margin: 0 16px 10px;
@@ -633,7 +659,7 @@ function renderProgreso() {
   document.getElementById('stat-pend').textContent = total - done;
   document.getElementById('stat-done').textContent = done;
 
-  const pendientes = PARADAS.filter(p => !entregadas.has(p.posicion));
+  const pendientes = PARADAS.filter(p => !entregadas.has(p._id));
   document.getElementById('nav-proxima').textContent =
     pendientes.length > 0 ? pendientes[0].cliente : "¡Completado!";
 
@@ -646,13 +672,25 @@ function renderProgreso() {
 }
 
 function renderParada(p) {
-  const esPrimera = !entregadas.has(p.posicion) &&
-    PARADAS.filter(x => !entregadas.has(x.posicion))[0]?.posicion === p.posicion;
-  const entregada = entregadas.has(p.posicion);
-  const hora = horasEntrega[p.posicion] || '';
+  const displayNum = PARADAS.findIndex(x => x._id === p._id) + 1;
+  const esPrimera = !entregadas.has(p._id) &&
+    PARADAS.filter(x => !entregadas.has(x._id))[0]?._id === p._id;
+  const entregada = entregadas.has(p._id);
+  const hora = horasEntrega[p._id] || '';
+  const draggable = !entregada;
 
   const notasHtml = p.notas
     ? `<div class="producto-tag" style="color:#d97706;border-color:#fde68a;background:#fffbeb;">⚠️ ${p.notas}</div>`
+    : '';
+
+  const handleHtml = draggable
+    ? `<span class="drag-handle" title="Arrastrar para reordenar">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="4" y="4" width="8" height="1.5" rx="0.75" fill="currentColor"/>
+          <rect x="4" y="7.25" width="8" height="1.5" rx="0.75" fill="currentColor"/>
+          <rect x="4" y="10.5" width="8" height="1.5" rx="0.75" fill="currentColor"/>
+        </svg>
+      </span>`
     : '';
 
   const accionHtml = entregada
@@ -673,7 +711,7 @@ function renderParada(p) {
           </svg>
           Navegar
         </button>
-        <button class="btn btn-entregar" onclick="marcarEntregado(${p.posicion})" ${!esPrimera ? 'disabled' : ''}>
+        <button class="btn btn-entregar" onclick="marcarEntregado('${p._id}')" ${!esPrimera ? 'disabled' : ''}>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M3 8l3.5 3.5 6.5-6.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -682,11 +720,13 @@ function renderParada(p) {
       </div>`;
 
   return `
-  <div class="parada ${esPrimera ? 'activa' : ''} ${entregada ? 'entregada' : ''}" id="parada-${p.posicion}">
+  <div class="parada ${esPrimera ? 'activa' : ''} ${entregada ? 'entregada' : ''}"
+       id="parada-${p._id}" data-id="${p._id}" ${draggable ? 'draggable="true"' : ''}>
     <div class="parada-inner">
       ${esPrimera ? `<div class="badge-siguiente"><span class="badge-dot"></span>Siguiente</div>` : ''}
       <div class="parada-top">
-        <span class="parada-num-label">Parada ${p.posicion} de ${PARADAS.length}</span>
+        <span class="parada-num-label">Parada ${displayNum} de ${PARADAS.length}</span>
+        ${handleHtml}
       </div>
       <div class="parada-nombre">${p.cliente}</div>
       <div class="parada-dir">
@@ -703,8 +743,8 @@ function renderParada(p) {
 }
 
 function renderLista() {
-  const pendientes = PARADAS.filter(p => !entregadas.has(p.posicion));
-  const hechas = PARADAS.filter(p => entregadas.has(p.posicion)).reverse();
+  const pendientes = PARADAS.filter(p => !entregadas.has(p._id));
+  const hechas = PARADAS.filter(p => entregadas.has(p._id)).reverse();
 
   document.getElementById('lista-paradas').innerHTML =
     pendientes.map(renderParada).join('');
@@ -720,16 +760,17 @@ function renderLista() {
   }
 
   renderProgreso();
+  attachDragEvents();
 }
 
 function navegar(url) {
   window.open(url, '_blank');
 }
 
-function marcarEntregado(posicion) {
+function marcarEntregado(id) {
   const hora = horaActual();
-  entregadas.add(posicion);
-  horasEntrega[posicion] = hora;
+  entregadas.add(id);
+  horasEntrega[id] = hora;
   document.getElementById('stat-hora').textContent = hora;
 
   const toast = document.getElementById('toast');
@@ -739,9 +780,9 @@ function marcarEntregado(posicion) {
   renderLista();
 
   setTimeout(() => {
-    const siguiente = PARADAS.find(p => !entregadas.has(p.posicion));
+    const siguiente = PARADAS.find(p => !entregadas.has(p._id));
     if (siguiente) {
-      const el = document.getElementById(`parada-${siguiente.posicion}`);
+      const el = document.getElementById(`parada-${siguiente._id}`);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, 300);
@@ -753,19 +794,113 @@ function mostrarError(msg) {
   document.getElementById('nav-proxima').textContent = 'Error al cargar';
 }
 
+// ── LOCALSTORAGE ──
+function saveOrder() {
+  localStorage.setItem('entregas-order', JSON.stringify(PARADAS.map(p => p._id)));
+}
+
+function restoreOrder(paradas) {
+  try {
+    const saved = localStorage.getItem('entregas-order');
+    if (!saved) return paradas;
+    const order = JSON.parse(saved);
+    const map = new Map(paradas.map(p => [p._id, p]));
+    const restored = order.map(id => map.get(id)).filter(Boolean);
+    // agregar paradas nuevas que no estaban guardadas
+    const savedSet = new Set(order);
+    paradas.forEach(p => { if (!savedSet.has(p._id)) restored.push(p); });
+    return restored;
+  } catch {
+    return paradas;
+  }
+}
+
+// ── DRAG AND DROP ──
+let draggedId = null;
+let dropTarget = null;
+let dropBefore = true;
+
+function attachDragEvents() {
+  const lista = document.getElementById('lista-paradas');
+
+  lista.addEventListener('dragstart', onDragStart);
+  lista.addEventListener('dragover',  onDragOver);
+  lista.addEventListener('dragleave', onDragLeave);
+  lista.addEventListener('drop',      onDrop);
+  lista.addEventListener('dragend',   onDragEnd);
+}
+
+function onDragStart(e) {
+  const card = e.target.closest('.parada[draggable="true"]');
+  if (!card) return;
+  draggedId = card.dataset.id;
+  e.dataTransfer.effectAllowed = 'move';
+  // pequeño delay para que la clase no afecte la imagen del drag
+  setTimeout(() => card.classList.add('dragging'), 0);
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  const card = e.target.closest('.parada[draggable="true"]');
+  if (!card || card.dataset.id === draggedId) return;
+
+  clearDropIndicators();
+  const rect = card.getBoundingClientRect();
+  dropBefore = e.clientY < rect.top + rect.height / 2;
+  card.classList.add(dropBefore ? 'drag-over-top' : 'drag-over-bottom');
+  dropTarget = card.dataset.id;
+  e.dataTransfer.dropEffect = 'move';
+}
+
+function onDragLeave(e) {
+  const card = e.target.closest('.parada');
+  if (card && !card.contains(e.relatedTarget)) {
+    card.classList.remove('drag-over-top', 'drag-over-bottom');
+  }
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  if (!draggedId || !dropTarget || draggedId === dropTarget) return;
+
+  const fromIdx = PARADAS.findIndex(p => p._id === draggedId);
+  let toIdx = PARADAS.findIndex(p => p._id === dropTarget);
+  if (fromIdx === -1 || toIdx === -1) return;
+
+  const [moved] = PARADAS.splice(fromIdx, 1);
+  // recalcular toIdx tras el splice
+  toIdx = PARADAS.findIndex(p => p._id === dropTarget);
+  PARADAS.splice(dropBefore ? toIdx : toIdx + 1, 0, moved);
+
+  saveOrder();
+  renderLista();
+}
+
+function onDragEnd() {
+  clearDropIndicators();
+  document.querySelectorAll('.parada.dragging').forEach(c => c.classList.remove('dragging'));
+  draggedId = null;
+  dropTarget = null;
+}
+
+function clearDropIndicators() {
+  document.querySelectorAll('.parada').forEach(c =>
+    c.classList.remove('drag-over-top', 'drag-over-bottom')
+  );
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderFecha();
 
-  console.log('Iniciando fetch...');
   fetch('/entregas.json')
     .then(r => {
-      console.log('Respuesta HTTP:', r.status, r.ok);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
     })
     .then(data => {
-      console.log('data:', data);
-      PARADAS = data.paradas;
+      // asignar _id estable basado en la posicion original del JSON
+      const paradas = data.paradas.map(p => ({ ...p, _id: String(p.posicion) }));
+      PARADAS = restoreOrder(paradas);
       if (data.conductor) {
         document.getElementById('conductor-nombre').textContent = data.conductor;
       }
