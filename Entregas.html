@@ -9,6 +9,7 @@
 <title>Entregas del Día</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await(a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({key:"AIzaSyATn4VTX2_T-s_JVkEPA-rGvM0E5tK9HE8",v:"weekly",language:"es"});</script>
 <style>
   * {
     margin: 0;
@@ -501,6 +502,43 @@
     margin-bottom: 6px;
   }
 
+  /* ── MAPA ── */
+  .mapa-wrap {
+    margin: 0 16px 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    background: #e5e7eb;
+  }
+
+  #mapa {
+    height: 220px;
+    width: 100%;
+    display: none;
+  }
+
+  .mapa-loading {
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #9ca3af;
+    font-size: 13px;
+  }
+
+  .mapa-loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #e5e7eb;
+    border-top-color: #9ca3af;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   /* ── DRAG AND DROP ── */
   .parada[draggable="true"] { cursor: grab; }
   .parada[draggable="true"]:active { cursor: grabbing; }
@@ -585,6 +623,15 @@
     <div class="stat-num naranja" id="stat-hora" style="font-size:17px">--:--</div>
     <div class="stat-label">Última hora</div>
   </div>
+</div>
+
+<!-- MAPA -->
+<div class="mapa-wrap">
+  <div class="mapa-loading" id="mapa-loading">
+    <div class="mapa-loading-spinner"></div>
+    Cargando mapa de ruta...
+  </div>
+  <div id="mapa"></div>
 </div>
 
 <!-- BANNER COMPLETADO -->
@@ -778,6 +825,7 @@ function marcarEntregado(id) {
   setTimeout(() => toast.classList.remove('show'), 2200);
 
   renderLista();
+  actualizarMarkers();
 
   setTimeout(() => {
     const siguiente = PARADAS.find(p => !entregadas.has(p._id));
@@ -786,6 +834,127 @@ function marcarEntregado(id) {
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, 300);
+}
+
+// ── MAPA ──
+let gmap = null;
+let gmarkers = {};   // _id -> Marker
+let routeLine = null;
+
+function getCachedCoords() {
+  try { return JSON.parse(localStorage.getItem('entregas-coords') || '{}'); }
+  catch { return {}; }
+}
+function saveCachedCoords(obj) {
+  localStorage.setItem('entregas-coords', JSON.stringify(obj));
+}
+
+async function initMap() {
+  try {
+    const { Map }      = await google.maps.importLibrary('maps');
+    const { Geocoder } = await google.maps.importLibrary('geocoding');
+
+    document.getElementById('mapa-loading').style.display = 'none';
+    const mapaEl = document.getElementById('mapa');
+    mapaEl.style.display = 'block';
+
+    gmap = new Map(mapaEl, {
+      zoom: 12,
+      center: { lat: 4.711, lng: -74.0721 },
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullscreenControl: false,
+      zoomControlOptions: { position: 7 }, // RIGHT_TOP
+    });
+
+    const geocoder = new Geocoder();
+    const cached   = getCachedCoords();
+    const bounds   = new google.maps.LatLngBounds();
+    const pathCoords = [];
+
+    // Geocodificar en paralelo
+    const results = await Promise.all(
+      PARADAS.map(p =>
+        cached[p._id]
+          ? Promise.resolve({ p, pos: cached[p._id] })
+          : geocoder.geocode({ address: p.direccion + ', Bogotá, Colombia' })
+              .then(r => {
+                const loc = r.results[0]?.geometry.location;
+                const pos = loc ? { lat: loc.lat(), lng: loc.lng() } : null;
+                if (pos) cached[p._id] = pos;
+                return { p, pos };
+              })
+              .catch(() => ({ p, pos: null }))
+      )
+    );
+
+    saveCachedCoords(cached);
+
+    results.forEach(({ p, pos }, i) => {
+      if (!pos) return;
+      bounds.extend(pos);
+      pathCoords.push(pos);
+      colocarMarker(p, pos, i + 1);
+    });
+
+    if (routeLine) routeLine.setMap(null);
+    routeLine = new google.maps.Polyline({
+      path: pathCoords,
+      geodesic: true,
+      strokeColor: '#111111',
+      strokeOpacity: 0.18,
+      strokeWeight: 2,
+      map: gmap,
+    });
+
+    if (pathCoords.length > 0) gmap.fitBounds(bounds, { padding: 32 });
+
+  } catch (err) {
+    console.warn('Maps no disponible:', err);
+    document.getElementById('mapa-loading').textContent = 'Mapa no disponible';
+  }
+}
+
+function iconSvg(num, delivered, isNext) {
+  const color = delivered ? '#22c55e' : isNext ? '#111111' : '#4b5563';
+  const r     = isNext ? 16 : 13;
+  const size  = r * 2;
+  const fs    = isNext ? 13 : 11;
+  const svg   = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+    <circle cx="${r}" cy="${r}" r="${r}" fill="${color}"/>
+    <text x="${r}" y="${r+1}" text-anchor="middle" dominant-baseline="middle"
+      fill="white" font-family="Inter,sans-serif" font-size="${fs}" font-weight="700">${num}</text>
+  </svg>`;
+  return {
+    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+    scaledSize: new google.maps.Size(size, size),
+    anchor: new google.maps.Point(r, r),
+  };
+}
+
+function colocarMarker(p, pos, num) {
+  if (gmarkers[p._id]) gmarkers[p._id].setMap(null);
+  const delivered = entregadas.has(p._id);
+  const isNext    = !delivered && PARADAS.filter(x => !entregadas.has(x._id))[0]?._id === p._id;
+  gmarkers[p._id] = new google.maps.Marker({
+    position: pos,
+    map: gmap,
+    icon: iconSvg(num, delivered, isNext),
+    title: p.cliente,
+    zIndex: isNext ? 100 : delivered ? 1 : 10,
+  });
+}
+
+function actualizarMarkers() {
+  if (!gmap) return;
+  PARADAS.forEach((p, i) => {
+    const marker = gmarkers[p._id];
+    if (!marker) return;
+    const delivered = entregadas.has(p._id);
+    const isNext    = !delivered && PARADAS.filter(x => !entregadas.has(x._id))[0]?._id === p._id;
+    marker.setIcon(iconSvg(i + 1, delivered, isNext));
+    marker.setZIndex(isNext ? 100 : delivered ? 1 : 10);
+  });
 }
 
 function mostrarError(msg) {
@@ -912,6 +1081,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('conductor-nombre').textContent = data.conductor;
       }
       renderLista();
+      initMap();
     })
     .catch(err => {
       console.error('Error cargando entregas.json:', err);
