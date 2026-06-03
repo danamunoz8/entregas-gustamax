@@ -539,6 +539,33 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* ── BOTÓN INICIAR RUTA ── */
+  .btn-iniciar-ruta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: calc(100% - 32px);
+    margin: 8px 16px 4px;
+    min-height: 56px;
+    background: #22c55e;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(34,197,94,0.3);
+    transition: opacity 0.15s ease, transform 0.1s ease;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-iniciar-ruta:active {
+    transform: scale(0.97);
+    opacity: 0.88;
+  }
+
   /* ── DRAG AND DROP ── */
   .parada[draggable="true"] { cursor: grab; }
   .parada[draggable="true"]:active { cursor: grabbing; }
@@ -640,6 +667,11 @@
   <h2>¡Ruta completada!</h2>
   <p id="banner-texto">Todas las entregas del día confirmadas.</p>
 </div>
+
+<!-- BOTÓN INICIAR RUTA -->
+<button class="btn-iniciar-ruta" onclick="iniciarRuta()">
+  🚀 Iniciar ruta completa
+</button>
 
 <!-- LISTA PENDIENTES -->
 <div class="section-title" id="title-pendientes">Ruta de hoy</div>
@@ -811,6 +843,14 @@ function renderLista() {
 }
 
 function navegar(url) {
+  window.open(url, '_blank');
+}
+
+function iniciarRuta() {
+  const base    = 'Cl. 151 #92-88, Suba, Bogotá, Colombia';
+  const paradas = PARADAS.map(p => p.direccion + ', Bogotá, Colombia');
+  const stops   = [base, ...paradas, base];
+  const url     = 'https://www.google.com/maps/dir/' + stops.map(encodeURIComponent).join('/');
   window.open(url, '_blank');
 }
 
