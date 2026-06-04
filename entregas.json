@@ -4,101 +4,101 @@
   "paradas": [
     {
       "posicion": 1,
-      "cliente": "speed pizza",
-      "direccion": "Cl. 151 #12C-22, Carpi, Bogotá",
+      "cliente": "burger comics",
+      "direccion": "calle 86 # 102 -61",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Cl.%20151%20%2312C-22%2C%20Carpi%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=calle%2086%20%23%20102%20-61%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 2,
-      "cliente": "el corne pizza",
-      "direccion": "cra 5b# 127a-95",
+      "cliente": "donde sea",
+      "direccion": "Cra. 86f #34a-50 sur, Kennedy, Bogotá",
       "notas": "",
-      "maps": "https://maps.google.com/?q=cra%205b%23%20127a-95%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=Cra.%2086f%20%2334a-50%20sur%2C%20Kennedy%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 3,
-      "cliente": "in house",
-      "direccion": "calle 181b # 8-53",
+      "cliente": "la region",
+      "direccion": "calle 48a sur # 81c-71",
       "notas": "",
-      "maps": "https://maps.google.com/?q=calle%20181b%20%23%208-53%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=calle%2048a%20sur%20%23%2081c-71%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 4,
-      "cliente": "josman",
-      "direccion": "cra 3 # 3-94 sopo",
+      "cliente": "kiwi",
+      "direccion": "Dg. 52a Sur #25-06, Bogotá",
       "notas": "",
-      "maps": "https://maps.google.com/?q=cra%203%20%23%203-94%20sopo%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=Dg.%2052a%20Sur%20%2325-06%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 5,
-      "cliente": "pizza evolution",
-      "direccion": "calle 167 # 46-38",
+      "cliente": "maxi pizza",
+      "direccion": "diagonal 17c sur 24i - 94",
       "notas": "",
-      "maps": "https://maps.google.com/?q=calle%20167%20%23%2046-38%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=diagonal%2017c%20sur%2024i%20-%2094%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 6,
-      "cliente": "pizza york",
-      "direccion": "Cl. 150 #48-87, Bogotá",
+      "cliente": "grilled food",
+      "direccion": "Cl. 38A Sur #34A-16, Antonio Nariño, Bogotá",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Cl.%20150%20%2348-87%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=Cl.%2038A%20Sur%20%2334A-16%2C%20Antonio%20Nari%C3%B1o%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 7,
-      "cliente": "rossopomodoro",
-      "direccion": "Cra. 49 #128 - 74, Bogotá",
+      "cliente": "olimpikas",
+      "direccion": "CRA 52A # 35-22 SUR",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Cra.%2049%20%23128%20-%2074%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=CRA%2052A%20%23%2035-22%20SUR%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 8,
-      "cliente": "bitta pizza",
-      "direccion": "Cl. 90 #15-25, Bogotá",
+      "cliente": "fruteria",
+      "direccion": "Cl. 37b Sur # 68C-71, Kennedy, Bogotá, D.C., Bogotá, Bogotá, D.C.",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Cl.%2090%20%2315-25%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=Cl.%2037b%20Sur%20%23%2068C-71%2C%20Kennedy%2C%20Bogot%C3%A1%2C%20D.C.%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20D.C.%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 9,
-      "cliente": "Casting",
-      "direccion": "Calle 60#55-40",
+      "cliente": "olimpicas 2",
+      "direccion": "Cra. 68d #38-22, Bogotá",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Calle%2060%2355-40%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=Cra.%2068d%20%2338-22%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 10,
-      "cliente": "alan pizza",
-      "direccion": "Cl. 63d # 23 - 08, Barrios Unidos, Bogotá, Cundinamarca",
+      "cliente": "pizza factory",
+      "direccion": "cra 52 # 20-21sur",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Cl.%2063d%20%23%2023%20-%2008%2C%20Barrios%20Unidos%2C%20Bogot%C3%A1%2C%20Cundinamarca%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=cra%2052%20%23%2020-21sur%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 11,
-      "cliente": "Manuela Beltran",
-      "direccion": "Cra. 1 # 60-36",
-      "notas": "Entregar antes de las 12:00 pm",
-      "maps": "https://maps.google.com/?q=Cra.%201%20%23%2060-36%2C%20Bogot%C3%A1%2C%20Colombia"
+      "cliente": "pizzarolo",
+      "direccion": "calle 4a # 40c 36",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=calle%204a%20%23%2040c%2036%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 12,
-      "cliente": "la calera",
-      "direccion": "CALLE 8 # 1 ESTE-64 la calera",
-      "notas": "Entregar despues de las 4:00 pm",
-      "maps": "https://maps.google.com/?q=CALLE%208%20%23%201%20ESTE-64%20la%20calera%2C%20Bogot%C3%A1%2C%20Colombia"
+      "cliente": "alan pizza",
+      "direccion": "Cl. 63d # 23 - 08",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=Cl.%2063d%20%23%2023%20-%2008%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 13,
-      "cliente": "pincho mania",
-      "direccion": "CRA 80 a #24 c 06",
-      "notas": "Entregar despues de las 4:00 pm",
-      "maps": "https://maps.google.com/?q=CRA%2080%20a%20%2324%20c%2006%2C%20Bogot%C3%A1%2C%20Colombia"
+      "cliente": "guillermo lopez",
+      "direccion": "Cra. 53a #127-35, Bogotá",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=Cra.%2053a%20%23127-35%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 14,
-      "cliente": "Napoli",
-      "direccion": "Cra. 77a # 71-36",
+      "cliente": "dvaleri",
+      "direccion": "cra 61 # 160-76",
       "notas": "",
-      "maps": "https://maps.google.com/?q=Cra.%2077a%20%23%2071-36%2C%20Bogot%C3%A1%2C%20Colombia"
+      "maps": "https://maps.google.com/?q=cra%2061%20%23%20160-76%2C%20Bogot%C3%A1%2C%20Colombia"
     }
   ]
 }
