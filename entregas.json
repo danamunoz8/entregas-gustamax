@@ -1,6 +1,6 @@
 {
   "conductor": "Carlos",
-  "fecha": "9/6/2026",
+  "fecha": "10/6/2026",
   "paradas": [
     {
       "posicion": 1,
@@ -11,94 +11,94 @@
     },
     {
       "posicion": 2,
-      "cliente": "pizza evolution",
-      "direccion": "calle 167 # 46-38",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=calle%20167%20%23%2046-38%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 3,
-      "cliente": "pizza york",
-      "direccion": "Cl. 150 #48-87, Bogotá",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=Cl.%20150%20%2348-87%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 4,
-      "cliente": "rossopomodoro",
-      "direccion": "cra 49 # 128-74",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=cra%2049%20%23%20128-74%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 5,
-      "cliente": "hacienda santa barbara",
-      "direccion": "Ak 7 #115-60, Usaquén, Bogotá, Cundinamarca",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=Ak%207%20%23115-60%2C%20Usaqu%C3%A9n%2C%20Bogot%C3%A1%2C%20Cundinamarca%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 6,
-      "cliente": "14/98 pizza",
-      "direccion": "cra 16 # 141-86",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=cra%2016%20%23%20141-86%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 7,
-      "cliente": "speed pizza",
-      "direccion": "Cl. 151 #12C-22, Carpi, Bogotá",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=Cl.%20151%20%2312C-22%2C%20Carpi%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 8,
-      "cliente": "nicolauma",
-      "direccion": "CALLE 156 # 7H-53",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=CALLE%20156%20%23%207H-53%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 9,
-      "cliente": "m y s hot dog",
-      "direccion": "cra 8h # 163b-13",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=cra%208h%20%23%20163b-13%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 10,
-      "cliente": "acorralados",
-      "direccion": "calle 164a # 15-27",
-      "notas": "",
-      "maps": "https://maps.google.com/?q=calle%20164a%20%23%2015-27%2C%20Bogot%C3%A1%2C%20Colombia"
-    },
-    {
-      "posicion": 11,
       "cliente": "janes pizza",
       "direccion": "calle 182 # 8a - 33",
       "notas": "",
       "maps": "https://maps.google.com/?q=calle%20182%20%23%208a%20-%2033%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
-      "posicion": 12,
+      "posicion": 3,
       "cliente": "fontanar",
       "direccion": "Cajicá - Chía #Km 2.5, Chía, Cundinamarca",
       "notas": "",
       "maps": "https://maps.google.com/?q=Cajic%C3%A1%20-%20Ch%C3%ADa%20%23Km%202.5%2C%20Ch%C3%ADa%2C%20Cundinamarca%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
-      "posicion": 13,
+      "posicion": 4,
       "cliente": "mac pizza",
       "direccion": "calle 176 # 46-04",
       "notas": "",
       "maps": "https://maps.google.com/?q=calle%20176%20%23%2046-04%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
-      "posicion": 14,
+      "posicion": 5,
+      "cliente": "pizza evolution",
+      "direccion": "calle 167 # 46-38",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=calle%20167%20%23%2046-38%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 6,
+      "cliente": "pizza york",
+      "direccion": "Cl. 150 #48-87, Bogotá",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=Cl.%20150%20%2348-87%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 7,
+      "cliente": "nicolauma",
+      "direccion": "CALLE 156 # 7H-53",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=CALLE%20156%20%23%207H-53%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 8,
+      "cliente": "m y s hot dog",
+      "direccion": "cra 8h # 163b-13",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=cra%208h%20%23%20163b-13%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 9,
+      "cliente": "acorralados",
+      "direccion": "calle 164a # 15-27",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=calle%20164a%20%23%2015-27%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 10,
+      "cliente": "speed pizza",
+      "direccion": "Cl. 151 #12C-22, Carpi, Bogotá",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=Cl.%20151%20%2312C-22%2C%20Carpi%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 11,
+      "cliente": "14/98 pizza",
+      "direccion": "cra 16 # 141-86",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=cra%2016%20%23%20141-86%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 12,
+      "cliente": "rossopomodoro",
+      "direccion": "cra 49 # 128-74",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=cra%2049%20%23%20128-74%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 13,
       "cliente": "bita pizza",
       "direccion": "Cl. 90 #15-25, Bogotá",
       "notas": "",
       "maps": "https://maps.google.com/?q=Cl.%2090%20%2315-25%2C%20Bogot%C3%A1%2C%20Bogot%C3%A1%2C%20Colombia"
+    },
+    {
+      "posicion": 14,
+      "cliente": "hacienda santa barbara",
+      "direccion": "Ak 7 #115-60, Usaquén, Bogotá, Cundinamarca",
+      "notas": "",
+      "maps": "https://maps.google.com/?q=Ak%207%20%23115-60%2C%20Usaqu%C3%A9n%2C%20Bogot%C3%A1%2C%20Cundinamarca%2C%20Bogot%C3%A1%2C%20Colombia"
     },
     {
       "posicion": 15,
